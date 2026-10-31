@@ -58,8 +58,8 @@ You need a clean *Zombies Ate My Neighbors (USA)* ROM: 1 MB, no header, CRC32 `7
 
 **Pick one:**
 
-- `zamn-save-the-neighbors.ips`: the all-in-one patch, with everything included. Apply it alone; it already contains every optional patch below.
-- Or any of the optional patches from `optional/`:
+- `zamn-save-the-neighbors.ips`: the all-in-one patch, with everything included. Apply it alone; it already contains every individual patch below.
+- Or any of the individual patches from `individual/`:
 
 | File | Adds |
 |---|---|
@@ -68,7 +68,7 @@ You need a clean *Zombies Ate My Neighbors (USA)* ROM: 1 MB, no header, CRC32 `7
 | `zamn-pause-map.ips` | Pause map and weapon/item cycling while paused |
 | `zamn-drop-in.ips` | Drop-in co-op, without the join prompt or saves |
 
-Saved runs, the OPTIONS screen and the join prompt are only in the all-in-one patch. The optional patches work without them.
+Saved runs, the OPTIONS screen and the join prompt are only in the all-in-one patch. The individual patches work without them.
 
 Reverse fire or strafe, the pause map and drop-in work together in any order. Details, including how to combine them with Reverse Inventory Cycling and the Bloody Disgusting Edition, are in the [patch readmes](patches/README.md).
 

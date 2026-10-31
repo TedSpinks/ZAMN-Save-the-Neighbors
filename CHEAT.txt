@@ -25,6 +25,6 @@ carries over to the next pause.
 
 Notes
 -----
-- It works in the full Save the Neighbors patch and in the optional
+- It works in the full Save the Neighbors patch and in the individual
   pause map patch.
 - It only changes what the map shows. It never touches the game itself.
