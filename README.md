@@ -1,6 +1,6 @@
 # ZAMN: Save the Neighbors Edition!
 
-A saved run for each player, drop-in co-op, a full auto-map, and reverse fire.
+A ROM hack for *Zombies Ate My Neighbors* (SNES) with a saved run for each player, drop-in co-op, a full auto-map, and reverse fire.
 
 - **Save the game!** Zeke and Julie each keep their own run, saved after every level. Resume either one or both, play solo or together, and mix it up whenever you like. High scores are saved too, and passwords still work!
 - **Drop-in co-op!** The second player joins any time by pressing Start, and can bring their own run along!
@@ -26,7 +26,7 @@ Each save is one run, written whenever you finish a level. When a run is over, s
 
 ## Pause map
 
-Pausing is much more useful now. The pause patch from [ZAMN: Splitscreen + Quality of Life](https://www.romhacking.net/hacks/10134/) by AuroraBorealis lets you change your weapon and item while the game is paused (B or A for the next one, Y or X for the previous one), which is super helpful.
+Pausing is much more useful now. The pause patch from [ZAMN: Splitscreen + Quality of Life](https://www.romhacking.net/hacks/10134/) by AuroraBorealis (included) lets you change your weapon and item while the game is paused (B or A for the next one, Y or X for the previous one), which is super helpful.
 
 Save the Neighbors also shows your remaining lives on the pause screen, as `REST n` where your score normally is.
 
