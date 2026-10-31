@@ -70,11 +70,11 @@ You need a clean *Zombies Ate My Neighbors (USA)* ROM: 1 MB, no header, CRC32 `7
 
 Saved runs, the OPTIONS screen and the join prompt are only in the all-in-one patch. The individual patches work without them.
 
-Reverse fire or strafe, the pause map and drop-in work together in any order. Details, including how to combine them with Reverse Inventory Cycling and the Bloody Disgusting Edition, are in the [patch readmes](patches/README.md).
+Reverse fire or strafe, the pause map and drop-in work together in any order. Details, including how to combine them with Reverse Inventory Cycling and the Bloody Disgusting Edition, are in the [patch readmes](https://github.com/TedSpinks/ZAMN-Save-the-Neighbors/tree/main/patches).
 
 ## More details
 
-[TECHNICAL.md](TECHNICAL.md) has the patched ROM checksums, how everything was tested, design notes and the version history.
+[TECHNICAL.md](https://github.com/TedSpinks/ZAMN-Save-the-Neighbors/blob/main/TECHNICAL.md) has the patched ROM checksums, how everything was tested, design notes and the version history.
 
 ## Credits
 

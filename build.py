@@ -80,14 +80,14 @@ def build_all(cleanpath, outdir):
     r = apply(open(f, 'rb').read(), art)
     finish('zamn-save-the-neighbors', r)
 
-    # one release zip: the main patch at the top, the individual patches in individual/, the docs, credits and CRCs of the results
+    # one release zip: the main patch at the top, the individual patches in individual/, the README, the cheat file and the CRCs of the results
     import zipfile
     individual = ['zamn-reverse-fire', 'zamn-strafe', 'zamn-pause-map', 'zamn-drop-in']
     main = 'zamn-save-the-neighbors'
     with zipfile.ZipFile(os.path.join(outdir, main + '-v0.9-beta.zip'), 'w', zipfile.ZIP_DEFLATED) as z:
         z.write(os.path.join(outdir, main + '.ips'), main + '.ips')
         for n in individual: z.write(os.path.join(outdir, n + '.ips'), 'individual/' + n + '.ips')
-        for doc in ('README.md', 'TECHNICAL.md'): z.writestr(doc, plain_links(open(os.path.join(HERE, doc)).read()))
+        z.writestr('README.md', plain_links(open(os.path.join(HERE, 'README.md')).read()))
         z.write(os.path.join(HERE, 'CHEAT.txt'), 'CHEAT.txt')
         z.writestr('CHECKSUMS.txt', 'Apply to Zombies Ate My Neighbors (USA), 1 MB, no header (CRC32 %08X, SHA-1 %s).\n' % (CLEAN_CRC32, CLEAN_SHA1) +
                    ''.join('%s%s.ips -> patched ROM CRC32 %s\n' % ('' if n == main else 'individual/', n, results[n][1]) for n in [main] + individual))

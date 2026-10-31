@@ -14,7 +14,7 @@ Each patch applied alone to the clean ROM (CRC32 `7CFC0C7C`):
 | `zamn-drop-in.ips` | 702 B | 2 MB | `B6F8306B` |
 
 ## Building
-`python3 build.py /path/to/clean.sfc [outdir]` (output goes to `out/` by default, which is not committed) builds every patch from the clean ROM, checks the ROM's CRC32 and SHA-1 first, and for each patch writes the IPS, verifies that applying it to the clean ROM reproduces the build byte for byte, and then packs one release zip (the main patch IPS, the individual patches in `individual/`, README.md, TECHNICAL.md, CHEAT.txt, CHECKSUMS.txt). Needs [asar](https://github.com/RPGHacker/asar) (in `tools/` or on PATH) and Python 3 with Pillow (title art only).
+`python3 build.py /path/to/clean.sfc [outdir]` (output goes to `out/` by default, which is not committed) builds every patch from the clean ROM, checks the ROM's CRC32 and SHA-1 first, and for each patch writes the IPS, verifies that applying it to the clean ROM reproduces the build byte for byte, and then packs one release zip (the main patch IPS, the individual patches in `individual/`, README.md, CHEAT.txt, CHECKSUMS.txt). Needs [asar](https://github.com/RPGHacker/asar) (in `tools/` or on PATH) and Python 3 with Pillow (title art only).
 
 | Output | Built from |
 |---|---|
