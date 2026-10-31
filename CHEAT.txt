@@ -1,0 +1,30 @@
+ZAMN: Save the Neighbors Edition - the map cheat
+=================================================
+
+SPOILER WARNING: this file spoils a hidden feature. You don't need it to
+enjoy the patch. Stop reading here if you'd rather find it on your own.
+
+
+How to use it
+-------------
+1. Pause the game with Start.
+2. Press Select to open the map.
+3. Hold A + B + L + R + Select together.
+
+Each time you press all five, the map steps to the next view:
+
+   normal  ->  whole level  ->  whole level + items  ->  normal
+
+- Whole level: the fog is gone, so the entire level is drawn, including
+  every victim you haven't found yet.
+- Whole level + items: the same, plus a white dot for each item still
+  lying around.
+
+The map goes back to normal every time you open it, so the cheat never
+carries over to the next pause.
+
+Notes
+-----
+- It works in the full Save the Neighbors patch and in the optional
+  pause map patch.
+- It only changes what the map shows. It never touches the game itself.

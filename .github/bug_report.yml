@@ -1,0 +1,17 @@
+name: Bug report
+description: Something does not work
+body:
+  - type: input
+    attributes: {label: Emulator, description: "Name, core and version (or 'hardware')"}
+    validations: {required: true}
+  - type: input
+    attributes: {label: ROM CRC32 before patching, description: "Should be 7CFC0C7C"}
+    validations: {required: true}
+  - type: textarea
+    attributes: {label: Patches applied and order}
+    validations: {required: true}
+  - type: textarea
+    attributes: {label: Steps to reproduce}
+    validations: {required: true}
+  - type: textarea
+    attributes: {label: Save state or .srm, description: "Attach if you can; remember a save state carries its own save RAM"}

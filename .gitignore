@@ -1,0 +1,10 @@
+**/.DS_Store
+*.sfc
+*.smc
+*.srm
+*.state
+*.st
+build/
+out/
+__pycache__/
+tools/asar

@@ -1,0 +1,33 @@
+# ZAMN Comprehensive Hack: Spike Notes (found with the headless Snes9x)
+
+## Spike 1: Title menu (START / PASSWORD)
+- Cursor: `$7E:0C6A` (object at DP `$0C00`, field `$6A`). 0 = START, 4 = PASSWORD. Up/Down both toggle it with `EOR #4` (wraps). Confirm = start any of B, Y, A, X, Start (`BIT #$D0C0`).
+- Pad words read by the menu loop: `$006E` (P1) and `$0070` (P2); `$62`/`$64` hold last values for edge detection.
+- Menu loop: `80:96C7`..`80:9751` (per frame: arrow animation using table `$97A4`, input check at `96F9`..`9726`, idle counter `$5E`, demo timeout when `$5E` reaches `$0384` frames, ~15 s).
+- Exit handler: `80:9754`..`80:97A3`. After the loop: cursor < 4 (START) -> `979E` (`SEC; RTS`, game starts); cursor = 4 -> runs the password screen via `JSL $82AFF3`, returns to the loop.
+- Cursor write that toggles it: `80:9726` (`STA $6A`).
+- To replace Password with Options: hook the PASSWORD branch at `80:9774`..`9792` (`JSL $82AFF3`) to call new Options code instead. Password then becomes an item inside Options.
+- RESOLVED below (Title graphics). Earlier note: "START" and "PASSWORD" on the title are not ASCII text objects (no `START` string in ROM, `PASSWORD` ASCII only on the password screen at `82:BFC2`, plus `BONUS/PASSWORD` at `82:D318`). They are graphics (tiles or sprites). Next step: find the tilemap/tiles in VRAM at the title state and decide between editing the graphic and drawing OPTIONS text with the game's own text routine on top.
+- Savestate: title menu reached at ~2300 frames from power-on with no input.
+
+## Title graphics (START / PASSWORD): answered
+- The two words are **sprites**, not background tiles: 10 OAM entries (16x16, OBSEL 0, name base 0), each a chunk of pre-drawn slanted art. PASSWORD = 7 sprites (one is reused for the repeated S), START = 3 sprites plus the extra first-letter chunk; positions (x,y) in the title state: (244,183) (213,175) (228,186) (212,191) (180,183) (196,194) (180,199) for the 0x26 group, and (215,170) (199,175) (183,178) for the 0x2C group. Palettes: 0x26 = palette 3 (green), 0x2C = palette 6 (white/blue); the cursor swaps which word is highlighted.
+- The art is **uncompressed 4bpp in ROM bank 8E**, one 16x16 chunk = 4 tiles = 0x80 bytes stored in order tile t, t+1, t+16, t+17. Chunks found: 8E:8B80 (PASSWORD first letter), 8C00, 8C80, 8D00, 8D80, 8E00 (the double S), then START chunks at 8E:8E80, 8F00, 8F80; a green copy of START sits next to them (highlighted/selected art). More title art follows after 8F80.
+- Proof: overwriting 8E:8B80 with the START chunk and zeroing 8C00 changed the label on the title screen immediately (PASSWORD now reads RT ;WORD). So relabelling = redrawing 7 chunk blocks.
+- Plan for OPTIONS: 7 letters (O P T I O N S) vs 8 in PASSWORD. Have glyphs: O, P, S (green, from PASSWORD), T (from START, recolor from white to green). Must draw I and N in the same slanted style. Slot the 7 letters into 7 sprites and move the 8th sprite off screen (or reuse by shifting positions). Where the sprite positions and tile numbers come from (the table that builds these OAM entries) is still to be found; if hard, keep the same sprite slots and draw each of the 8 slots as part of the OPTIONS art by rendering the word into the 8-slot strip.
+
+## OPTIONS title art: DONE (art only)
+- `ZAMN_OptionsTitleArt.ips` (312 bytes, bank 8E `8B80`-`8E7F`) redraws the PASSWORD label as OPTIONS. The art is a hand-finished picture kept in `options_title_art.txt` (ASCII pixels in the title's sprite frame); `build_title_art.py clean.sfc out.ips` encodes it with `art.py` (chunk codec). Letters started as O, P, S, T from the existing words plus a drawn I and N, then the user finished them by hand.
+- Palette (sprite palette 3, CGRAM 176-191): 4 = light mint outline, 5 = green fill, 6 = dark green, 8 = **black** (the letters' drop shadow, opaque over the red arcs), 0 = transparent.
+- **Highlight = palette swap:** the selected word's sprites switch from attr `$26` (palette 3) to `$2C` (palette 6, CGRAM 224-239) and flash. In palette 6 index 4 is blue-gray (208,216,248), index 8 is **blue** (176,176,248) and every other index is near-white, so the black shadow turns into the blue 3D edge. Shadow pixels therefore must follow the original pattern: it is the silhouette shifted by (-1,+2), (0,+2) and (-1,+1) (F1 0.89 against the original PASSWORD art). Stray shadow pixels show up as blue junk when the word is highlighted; `build_title_art.py` generates the shadow, `options_title_art.txt` holds only the lit pixels.
+- Only the five 16x16 cells `8B80,8C00,8C80,8D00,8D80` can show art: they form a staircase (screen x,y of the top-left: (180,199) (196,194) (212,191) (228,186) (244,183)). **Anything drawn outside those squares is dropped**; moving letters by a pixel or two silently clipped the P tip and the N top, which looked like "shaved" letters. Check with the clipping test (lit pixels outside the squares must be 0).
+- The sixth chunk `8E00` is drawn by two sprites, (180,183) above the P and (213,175) above the W/O, and holds three pixels (chunk row 15, cols 13-15): the top outline of PASSWORD's A and O. A glyph copied from only the five cells therefore lacks 3 pixels at the top. It is blanked here.
+- Letter geometry of the original word (for lining new letters up): tops lie on y = -0.248 x + 38.9 and bottoms on y = -0.250 x + 50.1 (layer frame = screen minus (170,165), x = letter center), one empty column between letters, strokes `#o#` (1 fill column) with a black shadow to the right of right-hand outlines, shear slope about -0.25 (columns rise to the right).
+- Cursor highlight swaps the palette, so selected/unselected both work. Zero byte overlap with Rebalanced, Split, QoL, pause, Reverse Inventory, Blood, hitbox, reverse fire and strafe patches, so it stacks anywhere.
+- This is art only: choosing OPTIONS still opens the password screen until the menu hook is written (`80:9792`).
+
+## Spike 2: High score table (not started)
+- ASCII text object exists on a TOP/SCORES screen: record at `82:BB00` (`TOP/SCORES`), with entries like `HUBERT///23456` right after. The table entries seem to be built from RAM; find where the scores are stored and where they're initialized and saved (name entry is the next thing to trace).
+
+## Debug core
+`snes9x_dbg.so` is the libretro core with a write-watch added to `cpuexec.cpp`: set env `ZWATCH=<hex WRAM offset>` (and optional `ZLOG=<file>`, default `/tmp/zwatch.log`) before loading; every change to that byte logs `PC op old->new A X Y D`. Patch: after `(*Opcodes[Op].S9xOpcode)();` compare `Memory.RAM[watch]` to the last value (save `Registers.PBPC` before the increment).
