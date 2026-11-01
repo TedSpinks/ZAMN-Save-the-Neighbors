@@ -13,16 +13,16 @@
 !SAV2    = $700300
 !SLEN    = $00E0
 !RLEN    = $006C
-!rA      = $7FFE22             ; scratch for the transfer loop
-!rB      = $7FFE24
-!rC      = $7FFE26
-!rD      = $7FFE28
+!rA      = $7FEE22             ; scratch for the transfer loop
+!rB      = $7FEE24
+!rC      = $7FEE26
+!rD      = $7FEE28
 !actmask = $7FFF0C             ; bit 0 / 1 = slot 0 / 1 was playing when the game started; bit 2 / 3 = this game owns that slot's save
                                ; (it wrote it, or resumed from it): only an owned save is wiped
-!tb      = $7FFE38             ; SRAM offset of the record being handled
-!ts      = $7FFE3A             ; live slot index (0 / 1) being handled
-!t2      = $7FFE3C             ; scratch
-!t3      = $7FFE3E             ; scratch
+!tb      = $7FEE38             ; SRAM offset of the record being handled
+!ts      = $7FEE3A             ; live slot index (0 / 1) being handled
+!t2      = $7FEE3C             ; scratch
+!t3      = $7FEE3E             ; scratch
 
 ; ---- hooks into the main game loop (80:84B1) ----
 pushpc

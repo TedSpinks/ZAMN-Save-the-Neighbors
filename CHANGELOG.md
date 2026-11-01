@@ -1,4 +1,17 @@
 # Changelog
 
+## 1.0.0 (in progress)
+Changes since 0.9.0-beta. Add a line here whenever something changes; this becomes the release notes.
+
+### Fixed
+- **Opening the pause map corrupted the bottom of big levels (pause map and all-in-one patches).** On levels 6, 12, 18, 19, 32, 35, 40, 41 and 48 the map's backup memory overlapped the end of the level's tile data, so after opening the map the bottom of the level showed a stray row of wrong tiles. The map now keeps its backup in the level layer's own tilemap and in memory no level uses, and redraws the level layer when it closes. The full-size map window is unchanged.
+- **Tile graphics not fully restored after closing the map (pause map and all-in-one patches).** Part of the video memory the map draws over was not backed up, and its VRAM read test wrote into tile graphics. Both are fixed.
+- **Joining mid-level could corrupt the level the same way (all-in-one patch).** The join prompt's buffers overlapped the level's tile data on the big levels; they moved.
+- **Map showed areas you had never visited after a drop-in join (all-in-one patch).** The save and OPTIONS code kept scratch variables inside the map's explored-area array, so joining mid-level marked random spots as explored.
+- **The secret bonus level password (BCDF) did not work (all-in-one patch).** OPTIONS treated its result as a wrong password. It now returns to the title as the original game does, and START plays the bonus level.
+
+### Known limitations
+- Two map markers of different colors in the same 8 x 8 cell share one color (for example both players close together, or a victim next to a player). The map's palette is set per cell, and moving a marker would misplace it, so this is left as is.
+
 ## 0.9.0-beta
 First public beta: ZAMN: Save the Neighbors Edition (one main patch) plus individual patches: reverse fire, strafe, pause map, drop-in.

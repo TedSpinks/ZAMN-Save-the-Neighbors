@@ -84,6 +84,22 @@ lorom
 !pbuf  = $7FFC90
 !dpsv  = $7FFC20
 
+; Memory the map borrows while it is open.  Bank 7F holds the level's tile map from 7F:0000 up to its size (as far as
+; 7F:EDFF on levels 12 and 19), so nothing here may go below 7F:EE00.
+; The VRAM the map draws over (words $45E0-$5037, bytes $8BC0-$A06F: its characters, the legend characters and the join
+; prompt's two tiles, 5296 bytes) is kept 4 KB in the level layer's own tilemap (the 64x32 scroll ring at !rbase, which the
+; game builds from the level map and which is rebuilt from it on exit) and the remaining 1200 bytes in WRAM.
+!rbase = $7FF1E0                ; VRAM word address of the level layer's tilemap ($1B7E)
+!dcn   = $7FF1E2                ; decals kept
+!dsv   = $7FEE00                ; decals: tilemap words of the visible window that differ from the level map (scorch marks
+                                ; and the like, which the game stamps into VRAM only): 128 x (VRAM word address, value).
+                                ; Shared with the join prompt and the save code, which never run while the map is open.
+DMAX   = 128
+!bkA   = $7FF300                ; backup bytes 4096-5119
+!bkB   = $7FFF30                ; backup bytes 5120-5295
+VBK0   = $45E0                  ; first VRAM word the map draws over
+VBKR   = $4DE0                  ; first word that does not fit in the ring (VBK0 + 2048)
+
 ; ---- hook: replaces the two frame-wait JSLs in the pause loop (BE:8061) ----
 org $BE8061
         jsl MapCheck
@@ -578,46 +594,14 @@ MapRun:
         inx
         cpx.w #$0020
         bne .c6
-        ; back up VRAM $9000-$9FFF (map chars + tilemap live there; split-screen uses it)
+        ; back up the VRAM the map draws over (see !rbase): decals first, then the characters into the ring and WRAM
+        rep #$30
+        lda.w $1B7E
+        sta.l !rbase
         jsr DetectVram
+        jsr DecalScan
+        jsr VBackup
         sep #$20
-        lda.b #$80
-        sta.w $2115
-        rep #$20
-        lda.w #$4800
-        sta.w $2116
-        sep #$20
-        lda.l !dummy
-        beq .nd1
-        lda.w $2139
-        lda.w $213A
-.nd1:   ldx.w #$0000
-.bt:    lda.w $2139
-        sta.l $7FE400,x
-        inx
-        lda.w $213A
-        sta.l $7FE400,x
-        inx
-        cpx.w #$0C00
-        bne .bt
-        ldx.w #$0000
-.bt2:   lda.w $2139
-        sta.l $7FF300,x
-        inx
-        lda.w $213A
-        sta.l $7FF300,x
-        inx
-        cpx.w #$0400
-        bne .bt2
-        ldx.w #$0000                    ; VRAM $5000-$5037: the legend tiles (chars 512-518) overwrite it
-.bt3:   lda.w $2139
-        sta.l $7FE000,x
-        inx
-        lda.w $213A
-        sta.l $7FE000,x
-        inx
-        cpx.w #$0070
-        bne .bt3
         ; sparse backup of the HUD tilemap (VRAM word $6400, the map's tilemap goes there)
         lda.b #$80
         sta.w $2115
@@ -969,40 +953,10 @@ MapRun:
         sta.w $2122
         lda.l !cgsv+9
         sta.w $2122
-        ; restore VRAM $9000-$9FFF from the backup
-        lda.b #$80
-        sta.w $2115
-        rep #$20
-        lda.w #$4800
-        sta.w $2116
-        sep #$20
-        ldx.w #$0000
-.rt:    lda.l $7FE400,x
-        sta.w $2118
-        inx
-        lda.l $7FE400,x
-        sta.w $2119
-        inx
-        cpx.w #$0C00
-        bne .rt
-        ldx.w #$0000
-.rt2:   lda.l $7FF300,x
-        sta.w $2118
-        inx
-        lda.l $7FF300,x
-        sta.w $2119
-        inx
-        cpx.w #$0400
-        bne .rt2
-        ldx.w #$0000
-.rt3:   lda.l $7FE000,x
-        sta.w $2118
-        inx
-        lda.l $7FE000,x
-        sta.w $2119
-        inx
-        cpx.w #$0070
-        bne .rt3
+        ; put back the VRAM the map drew over, then rebuild the level layer's tilemap and its decals
+        jsr VRestore
+        jsr RingBuild
+        jsr DecalPut
         rep #$20
         lda.w #$6400
         sta.w $2116
@@ -1067,13 +1021,22 @@ MapRun:
         rts
 
 ; some emulators return a stale latch on the first VRAM read after setting VMADD
-; (hardware does not); detect it with a sentinel so the readback works on both.
+; (hardware does not); detect it with a sentinel so the readback works on both.  The sentinel goes into the level layer's
+; tilemap, in the ring row just above the screen: off screen, and rebuilt from the level map on exit (RingBuild).
 DetectVram:
+        rep #$30
+        lda.w $1B7A                     ; ring row of the top screen row, minus one
+        dec a
+        and.w #$001F
+        asl a : asl a : asl a : asl a : asl a
+        clc
+        adc.l !rbase
+        sta $F4
         sep #$20
         lda.b #$80
         sta.w $2115
         rep #$20
-        lda.w #$4800
+        lda $F4
         sta.w $2116
         lda.w #$A5C3
         sta.w $2118
@@ -1082,7 +1045,7 @@ DetectVram:
         lda.w #$1234
         sta.w $2118
         ; try A: no dummy read
-        lda.w #$4800
+        lda $F4
         sta.w $2116
         sep #$20
         lda.w $2139
@@ -1104,6 +1067,302 @@ DetectVram:
 .needd: lda.w #1                        ; hardware/emulator needs a dummy read
 .set:   sta.l !dummy
         rts
+
+; ---------------------------------------------------------------------------
+; Keeping the VRAM the map draws over (see !rbase).  All with A/X/Y 16 bit, $2115 = $80, forced blank.
+
+; VRd: A = VRAM word address, X = offset in bank 7F, Y = byte count (even): VRAM -> WRAM
+VRd:    rep #$30
+        sta.w $2116
+        sep #$20
+        lda.l !dummy
+        beq +
+        lda.w $2139
+        lda.w $213A
++
+-       lda.w $2139
+        sta.l $7F0000,x
+        inx
+        lda.w $213A
+        sta.l $7F0000,x
+        inx
+        dey
+        dey
+        bne -
+        rep #$20
+        rts
+
+; VWr: A = VRAM word address, X = offset in bank 7F, Y = byte count (even): WRAM -> VRAM
+VWr:    rep #$30
+        sta.w $2116
+        sep #$20
+-       lda.l $7F0000,x
+        sta.w $2118
+        inx
+        lda.l $7F0000,x
+        sta.w $2119
+        inx
+        dey
+        dey
+        bne -
+        rep #$20
+        rts
+
+; VBackup: the 5296 bytes at VBK0: 16 x 256 into the ring (through rbuf), the rest into !bkA / !bkB
+VBackup:
+        rep #$30
+        sep #$20
+        lda.b #$80
+        sta.w $2115
+        rep #$20
+        stz $E0
+.c:     lda $E0
+        xba
+        lsr a                           ; chunk * 128 words
+        sta $E2
+        clc
+        adc.w #VBK0
+        ldx.w #!rbuf&$FFFF
+        ldy.w #256
+        jsr VRd
+        lda $E2
+        clc
+        adc.l !rbase
+        ldx.w #!rbuf&$FFFF
+        ldy.w #256
+        jsr VWr
+        lda $E0
+        inc a
+        sta $E0
+        cmp.w #16
+        bne .c
+        lda.w #VBKR
+        ldx.w #!bkA&$FFFF
+        ldy.w #1024
+        jsr VRd
+        lda.w #VBKR+512
+        ldx.w #!bkB&$FFFF
+        ldy.w #176
+        jmp VRd
+
+; VRestore: the reverse of VBackup
+VRestore:
+        rep #$30
+        sep #$20
+        lda.b #$80
+        sta.w $2115
+        rep #$20
+        stz $E0
+.c:     lda $E0
+        xba
+        lsr a
+        sta $E2
+        clc
+        adc.l !rbase
+        ldx.w #!rbuf&$FFFF
+        ldy.w #256
+        jsr VRd
+        lda $E2
+        clc
+        adc.w #VBK0
+        ldx.w #!rbuf&$FFFF
+        ldy.w #256
+        jsr VWr
+        lda $E0
+        inc a
+        sta $E0
+        cmp.w #16
+        bne .c
+        lda.w #VBKR
+        ldx.w #!bkA&$FFFF
+        ldy.w #1024
+        jsr VWr
+        lda.w #VBKR+512
+        ldx.w #!bkB&$FFFF
+        ldy.w #176
+        jmp VWr
+
+; LvWord: X = level column, Y = level row -> A = the tilemap word the game's scroll code makes for that tile (80:A5E5:
+; the level map word, plus priority when the tile number is below $DC).  Like the scroll code it does not stop at the right
+; edge (the column after the last one shows the start of the next row); a row outside the level gives 0 and carry set.
+LvWord: cpy.w $00B4                     ; rows
+        bcs .out
+        txa
+        asl a
+        sta $EE
+        tya
+        asl a
+        tax
+        lda.l $7E4328,x                 ; row offsets
+        clc
+        adc $EE
+        tax
+        lda.l $7F0000,x
+        pha
+        and.w #$01FF
+        cmp.w $00DC
+        pla
+        bcs +
+        ora.w #$2000
++       clc
+        rts
+.out:   lda.w #0
+        sec
+        rts
+
+; RingAddr: $E4 = screen row (0 = top), $E6 = screen column (0 = left) -> A = VRAM word address of that cell in the ring.
+; The scroll code keeps the ring row of the top screen row in $1B7A and the ring column of the left one in $1B76; ring column
+; c, row r is at base + r * 32 + c (c < 32) or base + $400 + r * 32 + c - 32 (the tables at 80:9D77 / 80:9DF7).
+RingAddr:
+        lda.w $1B7A
+        clc
+        adc $E4
+        and.w #$001F
+        asl a : asl a : asl a : asl a : asl a
+        sta $EE
+        lda.w $1B76
+        clc
+        adc $E6
+        and.w #$003F
+        cmp.w #32
+        bcc +
+        adc.w #$03DF                    ; (carry set) + $3E0 = $400 - 32
++       clc
+        adc $EE
+        clc
+        adc.l !rbase
+        rts
+
+; DecalScan: the visible cells (30 rows x 34 columns) whose tilemap word differs from what RingBuild will write there
+DecalScan:
+        rep #$30
+        lda.w #0
+        sta.l !dcn
+        stz $E4
+.r:     stz $E6
+.c:     jsr RingAddr
+        sta $E8
+        lda.w $1B6E                     ; level column of the left screen column
+        clc
+        adc $E6
+        tax
+        lda.w $1B72                     ; level row of the top screen row
+        clc
+        adc $E4
+        tay
+        jsr LvWord                      ; (0 outside the level: whatever is there is kept too)
+        sta $EA
+        lda $E8
+        sta.w $2116
+        sep #$20
+        lda.l !dummy
+        beq +
+        lda.w $2139
+        lda.w $213A
++       lda.w $2139
+        sta $EC
+        lda.w $213A
+        sta $ED
+        rep #$20
+        lda $EC
+        cmp $EA
+        beq .n
+        lda.l !dcn
+        cmp.w #DMAX
+        bcs .n                          ; (more than DMAX: the rest go, as they do when they scroll off)
+        asl a : asl a
+        tax
+        lda $E8
+        sta.l !dsv,x
+        lda $EC
+        sta.l !dsv+2,x
+        lda.l !dcn
+        inc a
+        sta.l !dcn
+.n:     lda $E6
+        inc a
+        sta $E6
+        cmp.w #34
+        bne .c
+        lda $E4
+        inc a
+        sta $E4
+        cmp.w #30
+        bne .r
+        rts
+
+; RingBuild: the whole 64 x 32 ring from the level map, each ring cell holding the level tile nearest the screen
+; (screen rows -1..30, columns -15..48), as the scroll code would have drawn it
+RingBuild:
+        rep #$30
+        sep #$20
+        lda.b #$80
+        sta.w $2115
+        rep #$20
+        stz $E0                         ; ring row
+.r:     lda $E0
+        sec
+        sbc.w $1B7A
+        and.w #$001F
+        cmp.w #31
+        bne +
+        lda.w #$FFFF                    ; the ring row above the screen
++       clc
+        adc.w $1B72
+        sta $E2                         ; level row
+        stz $E4                         ; ring column
+.h:     lda $E0                         ; start of a half row (32 consecutive words)
+        asl a : asl a : asl a : asl a : asl a
+        ldx $E4
+        cpx.w #32
+        bcc +
+        clc
+        adc.w #$0400
++       clc
+        adc.l !rbase
+        sta.w $2116
+.c:     lda $E4
+        sec
+        sbc.w $1B76
+        and.w #$003F
+        cmp.w #49
+        bcc +
+        sbc.w #64                       ; (carry set) columns 49-63 are the ones left of the screen
++       clc
+        adc.w $1B6E
+        tax
+        ldy $E2
+        jsr LvWord
+        sta.w $2118
+        lda $E4
+        inc a
+        sta $E4
+        cmp.w #32
+        beq .h
+        cmp.w #64
+        bne .c
+        lda $E0
+        inc a
+        sta $E0
+        cmp.w #32
+        bne .r
+        rts
+
+; DecalPut: the decals back over the rebuilt ring
+DecalPut:
+        rep #$30
+        ldx.w #0
+.l:     txa
+        lsr a : lsr a
+        cmp.l !dcn
+        bcs .d
+        lda.l !dsv,x
+        sta.w $2116
+        lda.l !dsv+2,x
+        sta.w $2118
+        inx : inx : inx : inx
+        bra .l
+.d:     rts
 
 ; clamp origin to [0, max] (multiples of 8)
 Clamp:

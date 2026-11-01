@@ -1,5 +1,7 @@
 # ZAMN Pause-Screen Level Map: data spike (level 1, US ROM)
 
+> Research notes kept for history. The memory layout described in the version sections below was later found to overlap the level's tile map on big levels; the current layout is in `patches/pause-map/TECHNICAL.md`.
+
 ## Where the level is in RAM
 - **Tile map:** 16-bit SNES tilemap words in bank `7F`, starting at `7F:0000`. Tile number = `word & $03FF` (the game also uses `& $01FF` and `$DC` for a priority check). One word = one 8x8 tile. World pixel position / 8 = tile coordinate.
 - **Row addressing:** `JSL $80AD1C` (X = tile column, Y = tile row, returns A = offset in bank 7F): `A = word at 7E:4328 + 2*Y`, plus `2*X`. The row table at `7E:4328` holds the byte offset of each row (level 1: 0, $160, $2C0, ... stride 352). `$B2` = row stride in bytes (352 for level 1, so width = 176 tiles). Rows in the table: at least 104.

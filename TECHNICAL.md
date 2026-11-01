@@ -7,10 +7,10 @@ Each patch applied alone to the clean ROM (CRC32 `7CFC0C7C`):
 
 | Patch | IPS size | Patched ROM size | Patched ROM CRC32 |
 |---|---|---|---|
-| `zamn-save-the-neighbors.ips` | 16,830 B | 2 MB | `8090F3E9` |
+| `zamn-save-the-neighbors.ips` | 17,297 B | 2 MB | `F3EB07D7` |
 | `zamn-reverse-fire.ips` | 193 B | 1 MB | `76BCB0CD` |
 | `zamn-strafe.ips` | 177 B | 1 MB | `6B1E29EE` |
-| `zamn-pause-map.ips` | 8,562 B | 2 MB | `FD0F363F` |
+| `zamn-pause-map.ips` | 9,024 B | 2 MB | `7AA976BF` |
 | `zamn-drop-in.ips` | 702 B | 2 MB | `B6F8306B` |
 
 ## Building

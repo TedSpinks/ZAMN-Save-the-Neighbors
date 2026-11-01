@@ -4,7 +4,7 @@ A ROM hack for *Zombies Ate My Neighbors* (SNES) with a saved run for each playe
 
 - **Save the game!** Zeke and Julie each keep their own run, saved after every level. Resume either one or both, play solo or together, and mix it up whenever you like. High scores are saved too, and passwords still work!
 - **Drop-in co-op!** The second player joins any time by pressing Start, and can bring their own run along!
-- **A full auto-map!** Pause, press Select, and the level fills in as you explore, like the maps in Metroidvanias and Dead Cells. Find every victim without getting lost!
+- **A full auto-map!** Pause, press Select, and the level fills in as you explore, like the maps in Metroidvanias and Dead Cells. Find every neighbor without getting lost!
 - **Reverse fire or strafe on R!** Hold R to shoot backward while you run away, or to lock your aim in place. Pairs perfectly with [Reverse Inventory Cycling](https://www.romhacking.net/hacks/4318/) on L (included).
 
 Includes both an all-in-one patch and separate patches: take everything, pick just the features you want, or mix them with other mods.

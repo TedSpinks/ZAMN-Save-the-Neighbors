@@ -8,27 +8,30 @@
 ;
 ; Result: 0 cancel, 1 resume the save, 2 start fresh (the save is replaced when the level ends, not before).
 
-!pcg    = $7FE400               ; CGRAM backup (512)
-!ptm    = $7FE600               ; HUD tilemap rows 9-17 backup (576)
-!pimg   = $7FE840               ; the 9 rows being shown (576)
-!ptile  = $7FEA80               ; backup of the two tiles drawn here (32)
-!pdum   = $7FEB40               ; VRAM reads need a dummy read first (see DetectVram in map.asm)
-!pcur   = $7FEB42               ; cursor row 0-2
-!pmode  = $7FEB44               ; 0 menu, 1 "SURE?"
-!pph    = $7FEB46               ; frame counter (blink)
-!pbl    = $7FEB48               ; blink phase
-!pprev  = $7FEB4A               ; pad of the previous frame
-!pres   = $7FEB4C               ; result, $FFFF = still choosing
-!plvl   = $7FEB4E               ; saved level
-!plif   = $7FEB50               ; saved lives
-!pchr   = $7FEB52               ; 0 Zeke, 1 Julie
-!pat    = $7FEB54               ; attribute for PutS
-!pnew   = $7FEB56               ; buttons newly pressed
-!ptmo   = $7FEB58               ; frames left before the prompt gives up
-!pdirty = $7FEB5A               ; the text has to be drawn again
-!pbat   = $7FEB5C               ; attribute of a blinking word
-!pt     = $7FEB5E
-!pq     = $7FEB60
+; Memory: bank 7F below 7F:EE00 holds the level's tile map (up to 7F:EDFF on the biggest levels), so the prompt keeps its
+; buffers in the space the pause map uses while it is open (the two are never up at the same time).
+!pcg    = $7FEE00               ; CGRAM backup (512); the save code's scratch shares it (it is not used while the prompt is up)
+!ptm    = $7FF300               ; HUD tilemap rows 9-17 backup (576)
+!pimg   = $7FF540               ; the 9 rows being shown (576)
+!ptile  = $7FFF30               ; backup of the two tiles drawn here (32)
+!pdum   = $7FFF50               ; VRAM reads need a dummy read first (see DetectVram in map.asm)
+!pcur   = $7FFF52               ; cursor row 0-2
+!pmode  = $7FFF54               ; 0 menu, 1 "SURE?"
+!pph    = $7FFF56               ; frame counter (blink)
+!pbl    = $7FFF58               ; blink phase
+!pprev  = $7FFF5A               ; pad of the previous frame
+!pres   = $7FFF5C               ; result, $FFFF = still choosing
+!plvl   = $7FFF5E               ; saved level
+!plif   = $7FFF60               ; saved lives
+!pchr   = $7FFF62               ; 0 Zeke, 1 Julie
+!pat    = $7FFF64               ; attribute for PutS
+!pnew   = $7FFF66               ; buttons newly pressed
+!ptmo   = $7FFF68               ; frames left before the prompt gives up
+!pdirty = $7FFF6A               ; the text has to be drawn again
+!pbat   = $7FFF6C               ; attribute of a blinking word
+!pt     = $7FFF6E
+!pq     = $7FFF70
+!pva    = $7FFF74               ; VRAM word the sentinel goes to
 
 PROW    = 9                     ; first HUD tilemap row used
 NROWS   = 9                     ; title, blank, RESUME, blank, NEW GAME, blank, CANCEL, blank, SURE?
@@ -461,12 +464,20 @@ PUpload: sep #$20
         rep #$20
         rts
 
-; VRAM reads need a dummy read first on some hardware and emulators: find out as the pause map does (VRAM word $4800 is free)
-PDetect: sep #$20
+; VRAM reads need a dummy read first on some hardware and emulators: find out as the pause map does
+PDetect: rep #$20
+        lda.w $1B7A                     ; the level layer's tilemap, ring row just above the screen: off screen, and drawn
+        dec a                           ; again by the scroll code before it comes into view (see DetectVram in map.asm)
+        and.w #$001F
+        asl a : asl a : asl a : asl a : asl a
+        clc
+        adc.w $1B7E
+        sta.l !pva
+        sep #$20
         lda.b #$80
         sta.w $2115
         rep #$20
-        lda.w #$4800
+        lda.l !pva
         sta.w $2116
         lda.w #$A5C3
         sta.w $2118
@@ -474,7 +485,7 @@ PDetect: sep #$20
         sta.w $2118
         lda.w #$1234
         sta.w $2118
-        lda.w #$4800
+        lda.l !pva
         sta.w $2116
         sep #$20
         lda.w $2139

@@ -3,23 +3,25 @@
 lorom
 
 ; Variables that must survive a level change live at 7F:FF08-FF0F: the explored-area array of the map (7F:FD00-FEFF) is wiped
-; whenever the level number changes, so 7F:FD00-FEFF is only used for what is needed while one screen or one call runs.
+; whenever the level number changes, so nothing else may touch it.  Bank 7F below 7F:EE00 holds the level's tile map.
+; Scratch for the screens and the save code lives at 7F:EE02-EF07, shared with the pause map's decal list and the join
+; prompt's palette backup (neither is up while this code runs).
 !rmode  = $7FFF08               ; $5A00 + mode (0 reverse fire, 1 strafe, 2 original); anything else reads as 0
-!ocur   = $7FFE02               ; cursor row 0..5 (RESUME GAME, PASSWORD, TOP SCORES, ERASE DATA, R mode, EXIT)
-!oprev  = $7FFE04               ; pad on the previous frame
-!ohold  = $7FFE06               ; frames the erase combo has been held
-!ocombo = $7FFE08               ; Start was pressed together with a face button: it must not exit on release
-!ostate = $7FFE0A               ; hint line: 0 normal, 1-3 erase countdown, 4 scores erased
-!cpad   = $7FFE0C               ; pad this frame (P1 | P2)
-!oedge  = $7FFE0E               ; buttons newly pressed this frame
-!ravail = $7FFE20               ; saved games present (save.asm): bit 0 Zeke, bit 1 Julie, bit 2 both
+!ocur   = $7FEE02               ; cursor row 0..5 (RESUME GAME, PASSWORD, TOP SCORES, ERASE DATA, R mode, EXIT)
+!oprev  = $7FEE04               ; pad on the previous frame
+!ohold  = $7FEE06               ; frames the erase combo has been held
+!ocombo = $7FEE08               ; Start was pressed together with a face button: it must not exit on release
+!ostate = $7FEE0A               ; hint line: 0 normal, 1-3 erase countdown, 4 scores erased
+!cpad   = $7FEE0C               ; pad this frame (P1 | P2)
+!oedge  = $7FEE0E               ; buttons newly pressed this frame
+!ravail = $7FEE20               ; saved games present (save.asm): bit 0 Zeke, bit 1 Julie, bit 2 both
 !resume = $7FFF0E               ; saved game chosen to resume: 1 Zeke, 2 Julie, 3 both, 0 none
 ; the RESUME screen (the Options variables above are not touched while it runs, except the ones .show resets again)
-!rinfo  = $7FFE10               ; level and victim count to show, 2 words each: Zeke, Julie, both (save.asm: ResInfo)
-!rcur   = $7FFE1C               ; cursor: the choice (1 Zeke, 2 Julie, 3 both) it is on
-!rtmp   = $7FFE1E               ; choice being drawn
-!rrow   = $7FFE06               ; position offset of the entry being drawn (rows of 6 text rows)
-!bptr   = $7FFE30               ; end of the object list being built
+!rinfo  = $7FEE10               ; level and victim count to show, 2 words each: Zeke, Julie, both (save.asm: ResInfo)
+!rcur   = $7FEE1C               ; cursor: the choice (1 Zeke, 2 Julie, 3 both) it is on
+!rtmp   = $7FEE1E               ; choice being drawn
+!rrow   = $7FEE06               ; position offset of the entry being drawn (rows of 6 text rows)
+!bptr   = $7FEE30               ; end of the object list being built
 !list   = $7FFF10               ; the object list (bank 7F, up to 240 bytes)
 
 !NP = 1                                 ; text palette
@@ -299,8 +301,11 @@ OptionsEntry:
         jsl $82AFF3
         lda.w $1E7C
         cmp.w #2
-        bcc .back
-        bra .done                       ; a good password: the title starts the game
+        bcs .done                       ; a good password: the title starts the game
+        cmp.w #1
+        beq .back                       ; a bad password: back to OPTIONS
+        bra .done                       ; 0 = the secret-level code (82:B018): back to the title, which keeps it, as the
+                                        ; original does; START then plays the bonus level
 .back:  jmp .show
 .nof:
         ; Start (released, not part of a combo) leaves

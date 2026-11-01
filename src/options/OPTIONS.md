@@ -26,7 +26,7 @@ TOP SCORES shows the attract-mode screen (`82:BA4F` set-up) and waits for any of
 ## Saving (`sram.asm`, included by `options.asm`)
 - Header: `$7FD6 = 2` (ROM + battery RAM), `$7FD8 = 3` (8 KB). SRAM is `$70:0000`.
 - `$0000` and `$0100`: two copies of one `$C8`-byte record (`'ZAMN'`, version 1, checksum, R mode word, the two score tables). Copy 1 is written, then copy 2, so a power cut mid-save leaves a good copy. Load takes the first valid one; if neither is valid the game keeps its default table. `$0200` onward is reserved for saved progress (a second record type).
-- `SaveIfChanged` builds the record in WRAM (`7F:FE40`), compares its checksum with the last loaded / saved one and writes only when it differs. It is called when the score screen is about to be shown (`82:BA16`, attract mode and game over), every time the title is (re)drawn (`80:915A`), and from Options after erasing scores or changing the R mode.
+- `SaveIfChanged` builds the record in WRAM (`7F:EE40`), compares its checksum with the last loaded / saved one and writes only when it differs. It is called when the score screen is about to be shown (`82:BA16`, attract mode and game over), every time the title is (re)drawn (`80:915A`), and from Options after erasing scores or changing the R mode.
 - Load: the boot-time `JSL $82BB0D` at `80:85FC` became `ScoresInit`, which runs it (defaults) and then overwrites the table and R mode from SRAM.
 - The original game stores 0 at `$70:0000` every time an attract demo starts (`80:9B78`, left over from a demo-recording buffer that nothing reads). That would wipe the first word of copy 1, so the store is NOPed.
 - Bank `BF` (previously empty) holds the save code.

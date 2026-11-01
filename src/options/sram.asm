@@ -7,10 +7,10 @@
 ; Record: +0 'ZAMN', +4 version (1), +6 checksum of +8..+$C7, +8 R mode word, +$0A score table 1 (7E:2064, $95 bytes),
 ;         +$9F score table 2 (7E:20FA, $28 bytes), +$C7 pad.
 ;
-; A copy is built in WRAM (7F:FE40) and only written when its checksum differs from the one last loaded / saved, so calling
+; A copy is built in WRAM (7F:EE40) and only written when its checksum differs from the one last loaded / saved, so calling
 ; SaveIfChanged is cheap and safe at any time.
 
-!stg    = $7FFE40               ; staging copy of the record ($C8 bytes)
+!stg    = $7FEE40               ; staging copy of the record ($C8 bytes)
 !sramck = $7FFF0A               ; checksum of the record SRAM holds (or its complement when SRAM has no valid record)
 !RECLEN = $00C8
 
