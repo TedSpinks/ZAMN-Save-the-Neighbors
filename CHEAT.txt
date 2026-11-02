@@ -16,7 +16,7 @@ Each time you press all five, the map steps to the next view:
    normal  ->  whole level  ->  whole level + items  ->  normal
 
 - Whole level: the fog is gone, so the entire level is drawn, including
-  every victim you haven't found yet.
+  every neighbor you haven't found yet.
 - Whole level + items: the same, plus a white dot for each item still
   lying around.
 

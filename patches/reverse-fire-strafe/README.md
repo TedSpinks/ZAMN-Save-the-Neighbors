@@ -11,12 +11,12 @@ Both let you back away from a horde while you keep shooting at it. Reverse fire 
 
 ## Changed controls
 
-In the original game, L and R both open the victim radar. Both patches move the radar to **Select** so R is free.
+In the original game, L and R both open the neighbor radar. Both patches move the radar to **Select** so R is free.
 
 | Button | Action |
 |---|---|
 | R (hold) | Reverse fire, or strafe (lock facing) |
-| Select | Victim radar |
+| Select | Neighbor radar |
 
 The attract-mode demos keep the original controls (L and R for the radar, no reverse or strafe), so they play exactly like the original game.
 

@@ -1,13 +1,13 @@
 # Pause map
 
-Pausing is much more useful now. The pause patch from [ZAMN: Splitscreen + Quality of Life](https://www.romhacking.net/hacks/10134/) by AuroraBorealis lets you change your weapon and item while the game is paused (B or A for the next one, Y or X for the previous one). This patch is built on it, and adds your remaining lives to the pause screen, shown as `REST n` where your score normally is. See [Credits](../../README.md#credits).
+Pausing is much more useful now. The pause patch from [ZAMN: Splitscreen + Quality of Life](https://www.romhacking.net/hacks/10134/) by AuroraBorealis lets you change your weapon and item while the game is paused (B or A for the next one, Y or X for the previous one). This patch is built on it, and adds your remaining lives to the pause screen, shown as a heart and a number (♥ n) where your score normally is. See [Credits](../../README.md#credits).
 
 Then press **Select** for the auto-map:
 
 - It starts empty and fills in as you explore, so you can see where you've been. Colors follow each level.
 - Both players appear as blinking markers (red for player 1, cyan for player 2).
-- Victims you've found show up in green, and a counter tells you how many are still left to save.
-- The exit door appears once the last victim is rescued.
+- Neighbors you've found show up in green, and a counter tells you how many are still left to save.
+- The exit door appears once the last neighbor is rescued.
 - On big levels the D-pad scrolls the map (hold to repeat), with arrows showing which way there is more.
 - **Select** goes back to the pause screen; **Start** closes the map and unpauses.
 

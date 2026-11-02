@@ -11,7 +11,9 @@ Includes both an all-in-one patch and separate patches: take everything, pick ju
 
 ## Save and OPTIONS
 
-A new **OPTIONS** entry on the title menu holds everything Save the Neighbors adds.
+Saves are for runs in progress. Each save is written whenever you finish a level. When a run is over, its save is **erased** (on game over, or when a player runs out of lives in co-op) and its score goes into the high score table, which lives on. Saves and scores use 8 KB of battery RAM, so flash carts need SRAM enabled.
+
+A new **OPTIONS** entry on the title menu is where you manage saves and settings.
 
 | Row | Action |
 |---|---|
@@ -22,17 +24,17 @@ A new **OPTIONS** entry on the title menu holds everything Save the Neighbors ad
 | R REVERSE / STRAFE / ORIGINAL | Left/Right changes the R setting |
 | EXIT | Back to the title |
 
-Each save is one run, written whenever you finish a level. When a run is over, so is its save: it's erased on game over, or when a player runs out of lives in co-op. It uses 8 KB of battery RAM, so flash carts need SRAM enabled.
-
 ## Pause map
 
 Pausing is much more useful now. The pause patch from [ZAMN: Splitscreen + Quality of Life](https://www.romhacking.net/hacks/10134/) by AuroraBorealis (included) lets you change your weapon and item while the game is paused (B or A for the next one, Y or X for the previous one), which is super helpful.
 
-Save the Neighbors also shows your remaining lives on the pause screen, as `REST n` where your score normally is.
+Save the Neighbors also shows your remaining lives on the pause screen, as a heart and a number (♥ n) where your score normally is.
 
-Then press **Select** for the auto-map. It starts empty and fills in as you explore, so you can always see where you've been. Both players appear as blinking markers (red for player 1, cyan for player 2). Victims you've found show up in green, a counter tells you how many are still left to save, and the exit door appears once the last one is rescued. On big levels the D-pad scrolls the map. **Select** goes back to the pause screen, and **Start** closes the map and unpauses.
+Then press **Select** for the auto-map. It starts empty and fills in as you explore, so you can always see where you've been. Both players appear as blinking markers (red for player 1, cyan for player 2). Neighbors you've found show up in green, a counter tells you how many are still left to save, and the exit door appears once the last one is rescued. On big levels the D-pad scrolls the map. **Select** goes back to the pause screen, and **Start** closes the map and unpauses.
 
 Stuck? The map has a cheat that reveals the unexplored parts of the level. The button combo is in [CHEAT.txt](https://github.com/TedSpinks/ZAMN-Save-the-Neighbors/blob/main/CHEAT.txt).
+
+Quirk: markers that are very close together can share a color, because the map colors each 8x8 pixel block as one unit. Positions stay accurate, and player colors take priority over neighbors.
 
 ## Drop-in co-op
 
@@ -42,7 +44,7 @@ A drop-in player who resumes keeps everything from their saved run: health, live
 
 ## Reverse fire and strafe
 
-Hold **R** while you walk to shoot backward (reverse fire) or to lock your aim in place (strafe). Choose reverse fire, strafe or the original controls on the OPTIONS screen. The victim radar moves to **Select**. The new controls are switched off during the attract-mode demos; otherwise they break the recordings.
+Hold **R** while you walk to shoot backward (reverse fire) or to lock your aim in place (strafe). Choose reverse fire, strafe or the original controls on the OPTIONS screen. The neighbor radar moves to **Select**. The new controls are switched off during the attract-mode demos; otherwise they break the recordings.
 
 ## Everything in the all-in-one patch
 

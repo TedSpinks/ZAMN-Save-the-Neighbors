@@ -14,7 +14,14 @@ for dx,dy in ((-1,2),(0,2),(-1,1)):                      # drop shadow, same sha
     for x,y in lit:
         if 0<=x+dx<100 and 0<=y+dy<60 and (x+dx,y+dy) not in lit: L[y+dy][x+dx]=8
 for (cx,cy,a),data in zip(art.CELLS,art.slice_back(L)): rom[art.ROMBASE+a:art.ROMBASE+a+0x80]=data
-rom[art.ROMBASE+0x8E00:art.ROMBASE+0x8E00+0x80]=bytes(0x80)   # the shared top-outline chunk (PASSWORD's O and A tops) is not used
+# The sixth chunk (8E:8E00) is drawn twice by the original label: sprite list 8F:E889 (count, then 8-byte entries x, y, ?,
+# tile), entries 2 and 5, at (213,175) and (180,183), carrying the tops of PASSWORD's O and A. Entry 5 is moved onto entry 2,
+# so the chunk shows once, at (213,175), and carries the art there (the top of the N's left stem, above cell 3).
+EXTRA=(213,175,0x8E00)
+rom[art.ROMBASE+0x8E00:art.ROMBASE+0x8E00+0x80]=art.slice_back(L,[EXTRA])[0]
+e5=(0x8F&0x7F)*0x8000+(0xE889-0x8000)+1+4*8
+assert clean[e5:e5+4]==bytes([0xDF,0xFF,0xEF,0xFF])            # entry 5: x -33, y -17
+rom[e5:e5+4]=bytes([0x00,0x00,0xE7,0xFF])                      # same as entry 2: x 0, y -25
 patch={i:rom[i] for i in range(len(rom)) if rom[i]!=clean[i]}
 open(sys.argv[2],'wb').write(asm65.ips_from(patch)); print(len(patch),"bytes changed, ips written")
 if len(sys.argv)>3:

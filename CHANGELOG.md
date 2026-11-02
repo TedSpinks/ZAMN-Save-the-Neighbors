@@ -10,8 +10,11 @@ Changes since 0.9.0-beta. Add a line here whenever something changes; this becom
 - **Map showed areas you had never visited after a drop-in join (all-in-one patch).** The save and OPTIONS code kept scratch variables inside the map's explored-area array, so joining mid-level marked random spots as explored.
 - **The secret bonus level password (BCDF) did not work (all-in-one patch).** OPTIONS treated its result as a wrong password. It now returns to the title as the original game does, and START plays the bonus level.
 
+### Changed
+- **OPTIONS title lettering (all-in-one patch).** The P, T and N were reshaped so every letter sits on the same slant as the rest of the word: the P now has a squarer top and a shorter stem (its rounded corner suited the start of the original PASSWORD, not the middle of a word), the T's stem ends one pixel higher, and the N's left stem no longer sags below the line. The top of the N is drawn by a spare sprite the original label already had.
+
 ### Known limitations
-- Two map markers of different colors in the same 8 x 8 cell share one color (for example both players close together, or a victim next to a player). The map's palette is set per cell, and moving a marker would misplace it, so this is left as is.
+- Two map markers of different colors in the same 8 x 8 cell share one color (for example both players close together, or a neighbor next to a player). The map's palette is set per cell, and moving a marker would misplace it, so this is left as is.
 
 ## 0.9.0-beta
 First public beta: ZAMN: Save the Neighbors Edition (one main patch) plus individual patches: reverse fire, strafe, pause map, drop-in.

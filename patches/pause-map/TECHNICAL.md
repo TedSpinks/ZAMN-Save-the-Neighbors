@@ -20,7 +20,7 @@
 - **VRAM not fully restored.** The map drew over `$8BC0-$8FFF` without keeping it, and some levels load tile graphics there (differences after closing the map on levels 2, 6, 7, 8, 11, 18 and 22). It also wrote its VRAM read test into `$9000` before backing it up. The whole range is kept now, and the read test (and the join prompt's) writes into the ring row just above the screen, which is off screen and rebuilt.
 
 ## Known limitation
-- The map's palette is chosen per 8 x 8 tile cell, so two markers of different colors inside the same cell (both players close together, or a victim next to a player) share one color. Moving a marker to avoid that would misplace it on the map, so they are left where they are.
+- The map's palette is chosen per 8 x 8 tile cell, so two markers of different colors inside the same cell (both players close together, or a neighbor next to a player) share one color. Moving a marker to avoid that would misplace it on the map, so they are left where they are.
 - Considered and not done: drawing the two player markers as sprites, which carry their own palette and would remove the sharing. It means taking over the sprite layer the map switches off, borrowing a sprite tile and palette, and saving and restoring the game's sprite memory on exit. It could not be verified without hardware and only affects markers that share a cell, so the risk was not worth it.
 
 ## Testing
