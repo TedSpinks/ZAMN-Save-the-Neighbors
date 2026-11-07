@@ -21,7 +21,7 @@ A new **OPTIONS** entry on the title menu is where you manage saves and settings
 | PASSWORD | The game's password screen |
 | TOP SCORES | The high score table |
 | ERASE DATA | Hold A+B+X+Y+Start for about 2 seconds to erase scores and saved games |
-| R REVERSE / STRAFE / RADAR | Left/Right changes the R setting. RADAR is the original setting, where R opens the neighbor radar |
+| R REVERSE / STRAFE / RADAR | Left/Right chooses what the R button does. |
 | EXIT | Back to the title |
 
 ## Pause map
