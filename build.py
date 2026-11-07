@@ -84,7 +84,7 @@ def build_all(cleanpath, outdir):
     import zipfile
     individual = ['zamn-reverse-fire', 'zamn-strafe', 'zamn-pause-map', 'zamn-drop-in']
     main = 'zamn-save-the-neighbors'
-    with zipfile.ZipFile(os.path.join(outdir, main + '-v0.9-beta.zip'), 'w', zipfile.ZIP_DEFLATED) as z:
+    with zipfile.ZipFile(os.path.join(outdir, main + '-v1.0.0.zip'), 'w', zipfile.ZIP_DEFLATED) as z:
         z.write(os.path.join(outdir, main + '.ips'), main + '.ips')
         for n in individual: z.write(os.path.join(outdir, n + '.ips'), 'individual/' + n + '.ips')
         z.writestr('README.md', plain_links(open(os.path.join(HERE, 'README.md')).read()))

@@ -7,7 +7,7 @@ Each patch applied alone to the clean ROM (CRC32 `7CFC0C7C`):
 
 | Patch | IPS size | Patched ROM size | Patched ROM CRC32 |
 |---|---|---|---|
-| `zamn-save-the-neighbors.ips` | 17,303 B | 2 MB | `3C9151FA` |
+| `zamn-save-the-neighbors.ips` | 17,297 B | 2 MB | `77B323A8` |
 | `zamn-reverse-fire.ips` | 193 B | 1 MB | `76BCB0CD` |
 | `zamn-strafe.ips` | 177 B | 1 MB | `6B1E29EE` |
 | `zamn-pause-map.ips` | 9,024 B | 2 MB | `7AA976BF` |
@@ -44,11 +44,11 @@ Scenarios run on Snes9x, bsnes (accuracy core) and Mesen-S through libretro; `CO
 - **Character select back-out** without full teardown gave garbage graphics or a hang in the sound handshake; fixed by leaving the way a game start does.
 - **Patching an already-patched ROM** left stale bytes; see above.
 
-## Known limits (0.9)
+## Known limits (1.0)
 - Emulator testing only.
 - Loading an emulator save state replaces the game's battery save with the copy inside the state (Save the Neighbors).
 - Save the Neighbors SRAM use is 8 KB; flash carts need SRAM enabled.
-- Backlog: pixel-smooth map panning, more glyphs (plus, colon, slash), twin-stick or nearest-victim pointers, gating the pause loop's unpause (`BE:806C`).
+- Backlog: pixel-smooth map panning, more glyphs (plus, colon, slash), nearest-victim pointers, gating the pause loop's unpause (`BE:806C`).
 
 ## Repository layout
 | Folder | Contents |
@@ -61,4 +61,5 @@ Scenarios run on Snes9x, bsnes (accuracy core) and Mesen-S through libretro; `CO
 | `docs/` | Research and planning notes: demo findings, level map, password list, release plan, toolchain notes |
 
 ## Version history
+- **1.0.0:** fixes the pause map's memory use on big levels (it overwrote the bottom of the level map and some tile graphics), the secret-level password, and joining mid-level; reshapes the OPTIONS title lettering; renames the R setting ORIGINAL to RADAR. See `CHANGELOG.md`.
 - **0.9.0-beta:** first public beta of the Save the Neighbors Edition and the individual patches (reverse fire, strafe, pause map, drop-in). See `CHANGELOG.md`.

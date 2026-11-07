@@ -34,7 +34,7 @@ Apply **one** of the two IPS files to a clean *Zombies Ate My Neighbors (USA)* R
 | Either + Pause map + Drop-in | Works | Any order |
 | Either + [Reverse Inventory Cycling v1.1](https://www.romhacking.net/hacks/4318/) | Works | Reverse Inventory first, then Reverse Fire or Strafe (in the other order Reverse Inventory puts the radar back on R, so R opens the radar too) |
 | Either + [Bloody Disgusting Edition](https://www.romhacking.net/hacks/4306/) | Works | Any order |
-| [Save the Neighbors Edition](../save-the-neighbors/README.md) | Already included: R is set to reverse, strafe or original in the OPTIONS menu | Use the all-in-one patch alone |
+| [Save the Neighbors Edition](../save-the-neighbors/README.md) | Already included: R is set to reverse, strafe or radar (the original) in the OPTIONS menu | Use the all-in-one patch alone |
 
 With Reverse Inventory Cycling, hold L while cycling weapons or items to cycle backward.
 

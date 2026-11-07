@@ -4,7 +4,7 @@
 
 ## What is in it
 
-- **Reverse fire, strafe or original controls on R**, chosen on the new **OPTIONS** screen (title menu) and remembered in battery RAM. See [Reverse Fire and Strafe](../reverse-fire-strafe/README.md).
+- **Reverse fire, strafe or the original radar button on R**, chosen on the new **OPTIONS** screen (title menu) and remembered in battery RAM. See [Reverse Fire and Strafe](../reverse-fire-strafe/README.md).
 - **Pause map** and weapon/item cycling while paused: [Pause map](../pause-map/README.md).
 - **Drop-in co-op** with a join prompt when the joiner's character has a saved game: RESUME, NEW GAME (replaces the save only when the next level ends) or CANCEL. [Drop-in](../drop-in/README.md).
 - **Saved games:** written when a level is completed. RESUME GAME in OPTIONS offers ZEKE, JULIE or BOTH. Game over and running out of lives wipe only what this game owns; ERASE DATA wipes everything. Passwords still work.
@@ -22,7 +22,7 @@
 | PASSWORD | The game's password screen |
 | TOP SCORES | The high score table |
 | ERASE DATA | Hold A+B+X+Y+Start for about 2 seconds to erase scores and saved games |
-| R REVERSE / STRAFE / ORIGINAL | A, B, X, Y or Left/Right cycles the setting |
+| R REVERSE / STRAFE / RADAR | A, B, X, Y or Left/Right cycles the setting. RADAR is the original: R opens the neighbor radar |
 | EXIT | Back to the title (Start does the same) |
 
 ## How to patch

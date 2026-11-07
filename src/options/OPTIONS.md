@@ -3,7 +3,7 @@
 `src/options/options.asm`, assembled by `build.py` after the other hacks. Code is in the free space at the end of bank 82 (`82:F974..`, 0xFF in the clean ROM) and `83:FC40`.
 
 ## Screen
-Same font and background as the password screen, so it matches the title and password screens. Items (rows 7/10/13/16, text column 5): PASSWORD, TOP SCORES, `R REVERSE` / `R STRAFE` / `R ORIGINAL`, EXIT. The selected item is palette 2 (green) and a left arrow (`:` glyph) sits at column 27, so the cursor does not rely on color alone.
+Same font and background as the password screen, so it matches the title and password screens. Items (rows 7/10/13/16, text column 5): PASSWORD, TOP SCORES, `R REVERSE` / `R STRAFE` / `R RADAR`, EXIT. The selected item is palette 2 (green) and a left arrow (`:` glyph) sits at column 27, so the cursor does not rely on color alone.
 
 | Input | Effect |
 |---|---|

@@ -11,7 +11,7 @@ Includes both an all-in-one patch and separate patches: take everything, pick ju
 
 ## Save and OPTIONS
 
-Saves are for runs in progress. Each save is written whenever you finish a level. When a run is over, its save is **erased** (on game over, or when a player runs out of lives in co-op) and its score goes into the high score table, which lives on. Saves and scores use 8 KB of battery RAM, so flash carts need SRAM enabled.
+Saves are for runs in progress, and there is one save per character (Zeke and Julie). Each save is written whenever you finish a level. When a run is over, its save is **erased** (on game over, or when a player runs out of lives in co-op) and its score goes into the high score table, which lives on. Saves and scores use 8 KB of battery RAM, so flash carts need SRAM enabled.
 
 A new **OPTIONS** entry on the title menu is where you manage saves and settings.
 
@@ -21,7 +21,7 @@ A new **OPTIONS** entry on the title menu is where you manage saves and settings
 | PASSWORD | The game's password screen |
 | TOP SCORES | The high score table |
 | ERASE DATA | Hold A+B+X+Y+Start for about 2 seconds to erase scores and saved games |
-| R REVERSE / STRAFE / ORIGINAL | Left/Right changes the R setting |
+| R REVERSE / STRAFE / RADAR | Left/Right changes the R setting. RADAR is the original setting, where R opens the neighbor radar |
 | EXIT | Back to the title |
 
 ## Pause map
@@ -44,7 +44,7 @@ A drop-in player who resumes keeps everything from their saved run: health, live
 
 ## Reverse fire and strafe
 
-Hold **R** while you walk to shoot backward (reverse fire) or to lock your aim in place (strafe). Choose reverse fire, strafe or the original controls on the OPTIONS screen. The neighbor radar moves to **Select**. The new controls are switched off during the attract-mode demos; otherwise they break the recordings.
+Hold **R** while you walk to shoot backward (reverse fire) or to lock your aim in place (strafe). Choose reverse fire, strafe or RADAR (the original controls, where R opens the neighbor radar) on the OPTIONS screen. With reverse fire or strafe, the neighbor radar moves to **Select**. The new controls are switched off during the attract-mode demos; otherwise they break the recordings.
 
 ## Everything in the all-in-one patch
 

@@ -12,7 +12,7 @@ Both are small IPS files for the 1 MB ROM (193 and 177 bytes). They share the sa
 Reverse Inventory Cycling also moves the radar check (`80:D28E`, `D295`). If it is applied after Reverse Fire or Strafe, it puts the radar back on R. Applied before, the patch here overwrites it. The two patches share nine bytes, seven of which differ (`tools/compat.py` lists them).
 
 ## Why not twin-stick
-A twin-stick scheme like *Smash T.V.* (A, B, X and Y fire in four directions) leaves too few buttons for fire, change weapon, change item, use item, radar, pause and the reverse-cycling modifier.
+I considered twin-stick controls like *Smash T.V.* I could have freed up enough buttons by only letting you change weapons and items from the pause screen, but I didn't feel like twin-stick fit the game. I think it suits a frantic game where enemies overwhelm you from every side, and ZAMN doesn't play like that. What I really needed was a little room: a way to shoot enemies while running away from them. I felt like reverse fire and strafe were better ways to do that.
 
 ## Testing
 - Attract-mode demos: the rendered frame, hashed every 100 frames for 40,000 frames, equals the original for both patches (Snes9x). The four demos use the original controls.

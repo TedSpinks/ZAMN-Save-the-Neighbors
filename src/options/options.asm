@@ -47,7 +47,7 @@ org $9FFFC0
 
 ; ---- radar button ----
 ; Reverse Fire / Reverse Inventory moved the radar to Select. While an attract demo plays ($1EB4 <> 0), or with
-; R BUTTON = ORIGINAL, the radar check uses the original L / R mask ($0030) again.
+; R BUTTON = RADAR (mode 2, called original in the code), the radar check uses the original L / R mask ($0030) again.
 org $80D28E                             ; was LDA $1A / AND #$2000 (Reverse Inventory)
         jsl RadarCur
         nop
@@ -910,8 +910,8 @@ TRRev:  %obj(5,17,!NP,"R/REVERSE")
 TRRevS: %obj(5,17,!SP,"R/REVERSE")
 TRStr:  %obj(5,17,!NP,"R/STRAFE")
 TRStrS: %obj(5,17,!SP,"R/STRAFE")
-TROrg:  %obj(5,17,!NP,"R/ORIGINAL")
-TROrgS: %obj(5,17,!SP,"R/ORIGINAL")
+TROrg:  %obj(5,17,!NP,"R/RADAR")
+TROrgS: %obj(5,17,!SP,"R/RADAR")
 TExit:  %obj(5,20,!NP,"EXIT")
 TExitS: %obj(5,20,!SP,"EXIT")
 TArrow: %obj(27,5,!SP,":")

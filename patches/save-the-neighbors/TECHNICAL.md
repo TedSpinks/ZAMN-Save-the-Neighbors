@@ -9,8 +9,8 @@
 Then the checksum is fixed, the IPS is diffed against the clean ROM and checked to reproduce the build byte for byte. Code lives in banks `BE` (pause loop, map) and `BF` (options, saves, drop-in, join prompt, back-out), plus small stubs in `82` and `83`.
 
 ## Design choices
-- **One R routine, three modes.** The five Reverse Fire / Strafe hook sites call `9F:FFC0`, which now jumps to `RMode`. The mode (`$5A00` + 0 reverse, 1 strafe, 2 original) is in `7F:FF08`; any other value reads as reverse, so power-on garbage is safe. `$1EB4` (demo) always means original controls.
-- **Radar:** `RadarCur` / `RadarPrev` (`83:FC40`) use Select, or the original L/R mask in a demo or with R = ORIGINAL.
+- **One R routine, three modes.** The five Reverse Fire / Strafe hook sites call `9F:FFC0`, which now jumps to `RMode`. The mode (`$5A00` + 0 reverse, 1 strafe, 2 original, shown as RADAR in the menu) is in `7F:FF08`; any other value reads as reverse, so power-on garbage is safe. `$1EB4` (demo) always means original controls.
+- **Radar:** `RadarCur` / `RadarPrev` (`83:FC40`) use Select, or the original L/R mask in a demo or with R = RADAR.
 - **Hitbox:** the original routine at `80:BEC9` keeps its 8/16 constants for the demos; the 12/24 copy is at `80:FF68`; `HbEntry` picks one by `$1EB4`. The +50% idea and routine come from JamesIV4 (see CREDITS).
 - **Demo safety:** demos replay recorded input against the real game, so any change in timing, collision or button meaning makes them drift. No hook sits in the level loader, and each change above checks `$1EB4`.
 
