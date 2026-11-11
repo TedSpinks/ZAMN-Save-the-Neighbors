@@ -589,7 +589,7 @@ Entry:  sta.l !rtmp                     ; A = choice: draws its name, level and 
         jsr AddNum
         lda.l !rrow
         clc
-        adc.w #$0712                    ; last digit of the victims: column 18, row 7
+        adc.w #$071A                    ; last digit of the victims: column 26, row 7 (under the level's last digit)
         tax
         ldy.w #!NP
         pla

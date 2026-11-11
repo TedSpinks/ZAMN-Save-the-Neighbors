@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1
+
+### Changed
+- **RESUME screen: the victims number now lines up with the level number (all-in-one patch).** Both numbers end in the same column, so the ones digits stack whether a number has one or two digits.
+
 ## 1.0.0
 Changes since 0.9.0-beta.
 

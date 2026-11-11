@@ -7,7 +7,7 @@ Each patch applied alone to the clean ROM (CRC32 `7CFC0C7C`):
 
 | Patch | IPS size | Patched ROM size | Patched ROM CRC32 |
 |---|---|---|---|
-| `zamn-save-the-neighbors.ips` | 17,297 B | 2 MB | `77B323A8` |
+| `zamn-save-the-neighbors.ips` | 17,297 B | 2 MB | `9C23CDAA` |
 | `zamn-reverse-fire.ips` | 193 B | 1 MB | `76BCB0CD` |
 | `zamn-strafe.ips` | 177 B | 1 MB | `6B1E29EE` |
 | `zamn-pause-map.ips` | 9,024 B | 2 MB | `7AA976BF` |
@@ -61,5 +61,6 @@ Scenarios run on Snes9x, bsnes (accuracy core) and Mesen-S through libretro; `CO
 | `docs/` | Research and planning notes: demo findings, level map, password list, release plan, toolchain notes |
 
 ## Version history
+- **1.0.1:** the RESUME screen's victims number lines up with the level number. See `CHANGELOG.md`.
 - **1.0.0:** fixes the pause map's memory use on big levels (it overwrote the bottom of the level map and some tile graphics), the secret-level password, and joining mid-level; reshapes the OPTIONS title lettering; renames the R setting ORIGINAL to RADAR. See `CHANGELOG.md`.
 - **0.9.0-beta:** first public beta of the Save the Neighbors Edition and the individual patches (reverse fire, strafe, pause map, drop-in). See `CHANGELOG.md`.
