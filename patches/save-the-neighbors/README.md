@@ -22,7 +22,7 @@
 | PASSWORD | The game's password screen |
 | TOP SCORES | The high score table |
 | ERASE DATA | Hold A+B+X+Y+Start for about 2 seconds to erase scores and saved games |
-| R REVERSE / STRAFE / RADAR | A, B, X, Y or Left/Right cycles the setting. RADAR is the original: R opens the neighbor radar |
+| R REVERSE / STRAFE / RADAR | A, B, X, Y or Left/Right chooses what the R button does |
 | EXIT | Back to the title (Start does the same) |
 
 ## How to patch

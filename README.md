@@ -81,6 +81,7 @@ Reverse fire or strafe, the pause map and drop-in work together in any order. De
 ## Credits
 
 - **Zombies Ate My Neighbors** by LucasArts and Konami. This repository contains no game data, only patches.
+- **AI assistance:** I built this with Claude, Anthropic's AI assistant. The design, art direction, play-testing and every gameplay decision are mine; Claude wrote and debugged the code, build tools and test scripts.
 - **Pause patch:** changing weapons and items while paused comes from [ZAMN: Splitscreen + Quality of Life](https://www.romhacking.net/hacks/10134/) by AuroraBorealis, and the pause map is built on it.
 - **[Reverse Inventory Cycling v1.1](https://www.romhacking.net/hacks/4318/)** by Stanley_Decker and Sloat, included.
 - **[Zombies Ate My Neighbors: Bloody Disgusting Edition](https://www.romhacking.net/hacks/4306/)** by Board_Avenger, included.
